@@ -1,0 +1,17 @@
+一、简介：
+
+封装一个公用的OkHttpClient
+
+封装一个通用的请求创建类CommonRequest
+
+封装一个通用的响应解析类：
+    通用的json响应类型的解析类JsonCommonResponse
+    通用的文件响应类型的解析类FileCommonResponse
+
+
+二、包
+    exception   异常
+    https       安全连接
+    listener    接口
+    request     请求
+    response    响应
