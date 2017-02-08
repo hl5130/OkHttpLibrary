@@ -10,7 +10,11 @@ public class OkHttpLog {
 
     private static final String LOG_TAG = "OkHttpLog";
 
+    private static final boolean isOpen = true;
+
     public static void error(String msg){
-        Log.e(LOG_TAG,msg);
+        if (isOpen){
+            Log.e(LOG_TAG,msg);
+        }
     }
 }

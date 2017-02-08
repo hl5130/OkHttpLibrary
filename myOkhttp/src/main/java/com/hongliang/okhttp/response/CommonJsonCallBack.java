@@ -53,12 +53,12 @@ public class CommonJsonCallBack implements Callback {
 
     @Override
     public void onFailure(Call call, final IOException e) {
-//        mDeliveryHandler.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                mListener.onFailure(new OkHttpException(NETWORK_ERROR, e));
-//            }
-//        });
+        mDeliveryHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                mListener.onFailure(new OkHttpException(NETWORK_ERROR, e));
+            }
+        });
 
         OkHttpLog.error("请求失败");
     }
@@ -76,23 +76,6 @@ public class CommonJsonCallBack implements Callback {
         });
     }
 
-
-//    private void dealWithResult(Object object) {
-//        if (object == null) {
-//            mListener.onFailure(new OkHttpException(NETWORK_ERROR, EMPTY_MSG));
-//            return;
-//        }
-//
-//        try {
-//            if (mClass == null) { //不需要转换对象的时候，直接回调onSuccess接口
-//                mListener.onSuccess(object);
-//            } else {
-//                mListener.onSuccess(object);
-//            }
-//        } catch (Exception e) {
-//            mListener.onFailure(new OkHttpException(OTHER_ERROR, e.getMessage()));
-//        }
-//    }
 
 
     private void dealWithResult(Object object) {
@@ -114,23 +97,6 @@ public class CommonJsonCallBack implements Callback {
                 }
             }
 
-//            JSONObject result = new JSONObject(object.toString()); //将返回的数据转换成json对象
-//            if (result.has(RESULT_CODE)) { //判断对象中是否有RESULT_CODE对应的字段
-//                if (result.optInt(RESULT_CODE) == RESULT_CODE_VALUE){
-//
-//                }else {
-//                    if (result.has(ERROR_MSG)){
-//                        mListener.onFailure(new OkHttpException(result.optInt(RESULT_CODE),result.optString(ERROR_MSG)));
-//                    }else {
-//                        mListener.onFailure(new OkHttpException(result.optInt(RESULT_CODE),EMPTY_MSG));
-//                    }
-//                }
-//
-//            } else { //没有对应的字段，就说明发生了错误
-//                if (result.has(ERROR_MSG)) {
-//                    mListener.onFailure(new OkHttpException(OTHER_ERROR, result.opt(ERROR_MSG)));
-//                }
-//            }
         } catch (Exception e) {
             mListener.onFailure(new OkHttpException(OTHER_ERROR, e.getMessage()));
         }

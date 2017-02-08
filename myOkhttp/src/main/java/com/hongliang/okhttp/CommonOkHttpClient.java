@@ -2,6 +2,7 @@ package com.hongliang.okhttp;
 
 import com.hongliang.okhttp.listener.DisposeDataHandler;
 import com.hongliang.okhttp.response.CommonJsonCallBack;
+import com.hongliang.okhttp.response.CommonJsonCallBack2;
 
 import java.util.concurrent.TimeUnit;
 
@@ -32,6 +33,12 @@ public class CommonOkHttpClient {
     public static Call get(Request request, DisposeDataHandler handler){
         Call call = mOkHttpClient.newCall(request);
         call.enqueue(new CommonJsonCallBack(handler));
+        return call;
+    }
+
+    public static Call post(Request request,DisposeDataHandler handler){
+        Call call = mOkHttpClient.newCall(request);
+        call.enqueue(new CommonJsonCallBack2(handler));
         return call;
     }
 }
