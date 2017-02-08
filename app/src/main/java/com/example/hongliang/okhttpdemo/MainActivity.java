@@ -54,46 +54,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void getRequest() {
-        //https://api.douban.com/v2/movie/in_theaters
-        CommonOkHttpClient.get(CommonRequest.createGetRequest("https://api.douban.com/v2/movie/in_theaters", null),
-                new DisposeDataHandler(new DisposeDataListener() {
-                    @Override
-                    public void onSuccess(Object responseObj) {
-                        textView.setText("");
-                        textView.setText(responseObj.toString());
-                        Log.d("tag", responseObj.toString());
-                    }
+        CommonOkHttpClient.get("https://api.douban.com/v2/movie/in_theaters", null, new DisposeDataListener() {
+            @Override
+            public void onSuccess(Object responseObj) {
+                textView.setText("");
+                textView.setText(responseObj.toString());
+                Log.d("tag", responseObj.toString());
+            }
 
-                    @Override
-                    public void onFailure(Object errorObj) {
-                        textView.setText("连接失败");
-                        Log.e("tag", "连接失败");
-                    }
-                }));
+            @Override
+            public void onFailure(Object errorObj) {
+                textView.setText("连接失败");
+                Log.e("tag", "连接失败");
+            }
+        });
     }
 
     private void postRequest() {
         HashMap<String, String> params = new HashMap<>();
         params.put("number", "5");
         params.put("type", "0");
-        CommonOkHttpClient.post(
-                CommonRequest.createPostRequest("https://go.1000fun.com/api/api/app/v2.0/member/subject/list", new RequestParams(params)),
-                new DisposeDataHandler(
-                        new DisposeDataListener() {
-                            @Override
-                            public void onSuccess(Object responseObj) {
-                                textView.setText("");
-                                textView.setText(responseObj.toString());
-                                Log.d("tag", responseObj.toString());
-                            }
+        CommonOkHttpClient.post("https://go.1000fun.com/api/api/app/v2.0/member/subject/list", params, new DisposeDataListener() {
+            @Override
+            public void onSuccess(Object responseObj) {
+                textView.setText("");
+                textView.setText(responseObj.toString());
+                Log.d("tag", responseObj.toString());
+            }
 
-                            @Override
-                            public void onFailure(Object errorObj) {
-                                textView.setText("连接失败");
-                                Log.e("tag", errorObj.toString());
-                            }
-                        },
-                        ThemeModel.class
-                ));
+            @Override
+            public void onFailure(Object errorObj) {
+                textView.setText("连接失败");
+                Log.e("tag", errorObj.toString());
+            }
+        });
     }
 }

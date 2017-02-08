@@ -1,17 +1,21 @@
 package com.hongliang.okhttp;
 
 import com.hongliang.okhttp.listener.DisposeDataHandler;
+import com.hongliang.okhttp.listener.DisposeDataListener;
+import com.hongliang.okhttp.request.CommonRequest;
+import com.hongliang.okhttp.request.RequestParams;
 import com.hongliang.okhttp.response.CommonJsonCallBack;
 import com.hongliang.okhttp.response.CommonJsonCallBack2;
 
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 
 /**
  * Created by hongliang on 2017/1/30.
+ * 管理框架，并对外放出公共方法
  */
 
 public class CommonOkHttpClient {
@@ -30,15 +34,71 @@ public class CommonOkHttpClient {
 
     }
 
-    public static Call get(Request request, DisposeDataHandler handler){
-        Call call = mOkHttpClient.newCall(request);
-        call.enqueue(new CommonJsonCallBack(handler));
+    /**
+     *  post请求，直接将结果丢给应用层
+     *
+     * @param url  请求地址
+     * @param params    请求参数
+     * @param listener  回调接口
+     * @return  call
+     */
+    public static Call post(String url, HashMap<String,String> params, DisposeDataListener listener){
+        Call call = mOkHttpClient.newCall(
+                CommonRequest.createPostRequest(url,new RequestParams(params))
+        );
+        call.enqueue(new CommonJsonCallBack2(new DisposeDataHandler(listener)));
         return call;
     }
 
-    public static Call post(Request request,DisposeDataHandler handler){
-        Call call = mOkHttpClient.newCall(request);
-        call.enqueue(new CommonJsonCallBack2(handler));
+    /**
+     *  post请求，将结果转换成对应的类之后，再丢给应用层
+     *
+     * @param url  请求地址
+     * @param params    请求参数
+     * @param listener  回调接口
+     * @param c     要转换的类
+     * @return call
+     */
+    public static Call post(String url, HashMap<String,String> params, DisposeDataListener listener,Class<?> c){
+        Call call = mOkHttpClient.newCall(
+                CommonRequest.createPostRequest(url,new RequestParams(params))
+        );
+        call.enqueue(new CommonJsonCallBack2(new DisposeDataHandler(listener,c)));
+        return call;
+    }
+
+
+    /**
+     *  get请求，直接将结果丢给应用层
+     *
+     * @param url  请求地址
+     * @param params    请求参数
+     * @param listener  回调接口
+     * @return  call
+     */
+    public static Call get(String url, HashMap<String,String> params, DisposeDataListener listener){
+        Call call = mOkHttpClient.newCall(
+                CommonRequest.createGetRequest(url,new RequestParams(params))
+        );
+        call.enqueue(new CommonJsonCallBack(new DisposeDataHandler(listener)));
+        return call;
+    }
+
+
+    /**
+     *  get请求，需要将结果转换成对应的类，再丢给应用层
+     *
+     * @param url  请求地址
+     * @param params    请求参数
+     * @param listener  回调接口
+     * @param c     要转换的类
+     * @return call
+     */
+    public static Call get(String url, HashMap<String,String> params, DisposeDataListener listener,Class<?> c){
+        Call call = mOkHttpClient.newCall(
+                CommonRequest.createGetRequest(url,new RequestParams(params))
+        );
+        call.enqueue(new CommonJsonCallBack(new DisposeDataHandler(listener,c)));
         return call;
     }
 }

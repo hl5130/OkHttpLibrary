@@ -18,7 +18,7 @@ import okhttp3.RequestBody;
 
 public class CommonRequest {
 
-    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8"); //请求方式
+    private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8"); //请求方式
 
     /**
      * 创建get请求类
@@ -27,7 +27,6 @@ public class CommonRequest {
      * @param params 请求参数
      */
     public static Request createGetRequest(String url, RequestParams params) {
-        // www.baidu.com?id=1999&name=skdjf
         StringBuilder urlBuilder = new StringBuilder(url).append("?");
         if (params != null) {
             for (Map.Entry<String, String> entry : params.urlParams.entrySet()) {
@@ -53,6 +52,7 @@ public class CommonRequest {
         if (params.urlParams != null){
             String jsonStr = new Gson().toJson(params.urlParams);
             requestBody = RequestBody.create(JSON,jsonStr);
+
         }
         return new Request.Builder()
                 .url(url)
@@ -61,6 +61,8 @@ public class CommonRequest {
                 .build();
 
     }
+
+    public void ss(){}
 
 
 }
