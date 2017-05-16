@@ -7,11 +7,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
 import com.hongliang.okhttp.CommonOkHttpClient;
 import com.hongliang.okhttp.listener.DisposeDataHandler;
 import com.hongliang.okhttp.listener.DisposeDataListener;
-import com.hongliang.okhttp.request.CommonRequset;
+import com.hongliang.okhttp.request.CommonRequest;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private Button btn_get,btn_post;
@@ -48,21 +47,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void getRequest() {
+        String url = "https://api.douban.com/v2/movie/in_theaters";
         //https://api.douban.com/v2/movie/in_theaters
-        CommonOkHttpClient.get(CommonRequset.createGetRequest("https://api.douban.com/v2/movie/in_theaters",null),
-                new DisposeDataHandler(new DisposeDataListener() {
-                    @Override
-                    public void onSuccess(Object responseObj) {
-                        textView.setText("");
-                        textView.setText(responseObj.toString());
-                        Log.d("tag",responseObj.toString());
-                    }
 
-                    @Override
-                    public void onFailure(Object errorObj) {
-                        textView.setText("连接失败");
-                        Log.e("tag","连接失败");
-                    }
-                }));
+        CommonOkHttpClient.get(url, null, new DisposeDataListener() {
+            @Override
+            public void onSuccess(Object responseObj) {
+                textView.setText("");
+                textView.setText(responseObj.toString());
+                Log.d("tag",responseObj.toString());
+            }
+
+            @Override
+            public void onFailure(Object errorObj) {
+                textView.setText("连接失败");
+                Log.e("tag","连接失败");
+            }
+        });
     }
 }
